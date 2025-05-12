@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pixel_put.c                                        :+:      :+:    :+:   */
+/*   xpm_file_to_image.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 03:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/10 21:52:26 by smamalig         ###   ########.fr       */
+/*   Created: 2025/05/10 21:47:59 by smamalig          #+#    #+#             */
+/*   Updated: 2025/05/10 22:39:33 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx_opengl.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-int	mlx_pixel_put(t_mlx *mlx, void *win, t_pixel_put_options opt)
-{
-	(void)win;
-	(void)mlx;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, 800, 600, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glBegin(GL_POINTS);
-	glColor4ub(opt.r, opt.g, opt.b, opt.a);
-	glVertex2i(opt.x, opt.y);
-	glEnd();
-	return (0);
-}
+// void	*mlx_xpm_file_to_image(t_mlx *mlx, const char *filename,
+// 	int *width, int *height)
+// {
+// 	int		fd;
+// 	off_t	size;
+// 	
+// 	fd = open(filename, O_RDONLY);
+// 	if (fd == -1)
+// 		return (NULL);
+// 	size = lseek(fd, 0, SEEK_END);
+// 	if (size == -1)
+// 		return (NULL);
+// 	return (0);
+// }
