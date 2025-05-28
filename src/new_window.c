@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/11 11:31:46 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/05/25 14:26:53 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 
 void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title)
 {
-	(void)title;
-	XGCValues xgcv;
+	XGCValues	xgcv;
 
 	memset(&xgcv, 0, sizeof(XGCValues));
 	mlx->cmap = XCreateColormap(mlx->dpy, RootWindow(mlx->dpy, mlx->scr_id),
@@ -38,7 +37,7 @@ void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title)
 	xgcv.function = GXcopy;
 	xgcv.plane_mask = AllPlanes;
 	mlx->gc = XCreateGC(mlx->dpy, mlx->win,
-			GCFunction|GCPlaneMask|GCForeground, &xgcv);
+			GCFunction | GCPlaneMask | GCForeground, &xgcv);
 	XStoreName(mlx->dpy, mlx->win, title);
 	glXMakeCurrent(mlx->dpy, mlx->win, mlx->glc);
 	XClearWindow(mlx->dpy, mlx->win);

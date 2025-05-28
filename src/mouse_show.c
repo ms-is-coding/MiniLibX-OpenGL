@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pixel_put.c                                        :+:      :+:    :+:   */
+/*   mouse_show.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 03:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/25 10:04:03 by smamalig         ###   ########.fr       */
+/*   Created: 2025/05/25 14:00:42 by smamalig          #+#    #+#             */
+/*   Updated: 2025/05/25 14:01:15 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx_opengl.h"
 
-int	mlx_pixel_put(t_mlx *mlx, void *win,
-	int x, int y, int color)
+int	mlx_mouse_show(t_mlx *mlx, void *win)
 {
 	(void)win;
-	(void)mlx;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, 800, 600, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glBegin(GL_POINTS);
-	glColor4ub((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff,
-		(color >> 24) & 0xff);
-	glVertex2i(x, y);
-	glEnd();
+	XUndefineCursor(mlx->dpy, mlx->win);
 	return (0);
 }

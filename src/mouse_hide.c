@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pixel_put.c                                        :+:      :+:    :+:   */
+/*   mouse_hide.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 03:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/25 10:04:03 by smamalig         ###   ########.fr       */
+/*   Created: 2025/05/25 12:30:30 by smamalig          #+#    #+#             */
+/*   Updated: 2025/05/25 14:24:14 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx_opengl.h"
+#include <X11/X.h>
+#include <X11/Xlib.h>
 
-int	mlx_pixel_put(t_mlx *mlx, void *win,
-	int x, int y, int color)
+int	mlx_mouse_hide(t_mlx *mlx, void *win)
 {
+	const char	data[1] = {0};
+	Cursor		cursor;
+	Pixmap		blank;
+	XColor		dummy;
+
 	(void)win;
-	(void)mlx;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, 800, 600, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glBegin(GL_POINTS);
-	glColor4ub((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff,
-		(color >> 24) & 0xff);
-	glVertex2i(x, y);
-	glEnd();
+	blank = XCreateBitmapFromData(mlx->dpy, mlx->win, data, 1, 1);
+	cursor = XCreatePixmapCursor(mlx->dpy, blank, blank, &dummy, &dummy, 0, 0);
+	XDefineCursor(mlx->dpy, mlx->win, cursor);
+	XFreePixmap(mlx->dpy, blank);
+	XFreeCursor(mlx->dpy, cursor);
 	return (0);
 }

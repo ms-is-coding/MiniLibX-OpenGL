@@ -39,44 +39,15 @@ make
 
 ## Usage
 
-You can refer to the original MiniLibX's usage page, almost all of the APIs
-are the same ([see table below](#function-reference)).
-```c
-int main(void)
-{
-    // Initialize the MLX
-    t_mlx *mlx = mlx_init();
-    if (!mlx)
-    {
-        printf("Could not initialize MLX\n");
-        return (1);
-    }
-
-    // Create a window
-    t_win *win = mlx_new_window(mlx);
-    if (!win)
-    {
-        printf("Could not create window\n");
-        return (1);
-    }
-
-    mlx_loop(mlx);
-    mlx_destroy_window(mlx, win);
-    mlx_destroy_display(mlx);
-    return (0);
-}
-```
+You can refer to the original MiniLibX's usage page, all of the APIs
+are the same.
 
 ## Function reference
 
-> [!NOTE]
-> The functions marked with a \* have a different signature from their MLX
-> equivalents
-
 - [x] `mlx_init`
 - [x] `mlx_new_window`
-- [ ] `mlx_clear_window`
-- [x] *`mlx_pixel_put`
+- [x] `mlx_clear_window`
+- [x] `mlx_pixel_put`
 - [ ] `mlx_new_image`
 - [ ] `mlx_get_data_addr`
 - [ ] `mlx_put_image_to_window`
@@ -99,10 +70,17 @@ int main(void)
 - [ ] `mlx_do_key_autorepeaton`
 - [ ] `mlx_do_sync`
 - [ ] `mlx_mouse_get_pos`
-- [ ] `mlx_mouse_move`
-- [ ] `mlx_mouse_hide`
-- [ ] `mlx_mouse_show`
+- [x] `mlx_mouse_move`
+- [x] `mlx_mouse_hide`
+- [x] `mlx_mouse_show`
 - [ ] `mlx_get_screen_size`
+
+> [!WARNING]
+> All of the functions below are not present in the original MiniLibX, therefore
+> you must only use them when IS_MLX_OPENGL is present. Make sure your code
+> respects the norm :)
+
+- [ ] WIP
 
 ## License
 
