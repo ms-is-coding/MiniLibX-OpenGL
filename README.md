@@ -57,7 +57,7 @@ are the same.
 - [ ] `mlx_expose_hook`
 - [x] `mlx_loop_hook`
 - [x] `mlx_loop`
-- [ ] `mlx_loop_end`
+- [x] `mlx_loop_end`
 - [ ] `mlx_string_put`
 - [ ] `mlx_set_font`
 - [ ] `mlx_xpm_to_image`
@@ -66,21 +66,21 @@ are the same.
 - [ ] `mlx_destroy_image`
 - [x] `mlx_destroy_display`
 - [ ] `mlx_hook`
-- [ ] `mlx_do_key_autorepeatoff`
-- [ ] `mlx_do_key_autorepeaton`
-- [ ] `mlx_do_sync`
-- [ ] `mlx_mouse_get_pos`
+- [x] `mlx_do_key_autorepeatoff`
+- [x] `mlx_do_key_autorepeaton`
+- [x] `mlx_do_sync`
+- [x] `mlx_mouse_get_pos`
 - [x] `mlx_mouse_move`
 - [x] `mlx_mouse_hide`
 - [x] `mlx_mouse_show`
-- [ ] `mlx_get_screen_size`
+- [x] `mlx_get_screen_size`
 
 > [!WARNING]
 > All of the functions below are not present in the original MiniLibX, therefore
 > you must only use them when IS_MLX_OPENGL is present. Make sure your code
 > respects the norm :)
 
-- [ ] WIP
+- [ ] `mlx_window_move`
 
 ## License
 

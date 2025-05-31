@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   triangle.test.c                                       ⠀⠀⠀⠀⢀⣴⣿⠟⠁ ⣿⠟⢹⣿⣿⠀   */
+/*   triangle.test.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 01:18:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/27 15:58:47 by smamalig              ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   */
+/*   Updated: 2025/05/31 20:08:56 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ int	main(void)
 	win = mlx_new_window(mlx, 800, 600, "Test");
 	if (!win)
 		return (1);
-	mlx_mouse_hide(mlx, win);
-	mlx_mouse_show(mlx, win);
 	mlx_loop_hook(mlx, render, mlx);
 	mlx_loop(mlx);
 	mlx_destroy_window(mlx, NULL);

@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/25 14:23:28 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/05/31 19:57:20 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # include <GL/gl.h>
 # include <GL/glx.h>
 
+typedef struct s_window {
+	Window				xwin;
+	struct s_window		*next;
+}	t_window;
+
 typedef struct s_mlx
 {
 	Window					root;
@@ -31,6 +36,7 @@ typedef struct s_mlx
 	GC						gc;
 	int						scr_id;
 	int						running;
+	t_window				*win_list;
 	Display					*dpy;
 	Screen					*scr;
 	XVisualInfo				*vi;
@@ -65,7 +71,7 @@ int		mlx_hook(void *win, int x_event, int x_mask, int (*fn)(), void *param);
 int		mlx_do_key_autorepeaton(t_mlx *mlx);
 int		mlx_do_key_autorepeatoff(t_mlx *mlx);
 int		mlx_do_sync(t_mlx *mlx);
-int		mlx_mouse_get_pos(t_mlx *mlx, void *win, int *x_ptr, int *y_ptr);
+int		mlx_mouse_get_pos(t_mlx *mlx, t_window *win, int *x_ptr, int *y_ptr);
 int		mlx_mouse_move(t_mlx *mlx, void *win, int x, int y);
 int		mlx_mouse_hide(t_mlx *mlx, void *win);
 int		mlx_mouse_show(t_mlx *mlx, void *win);

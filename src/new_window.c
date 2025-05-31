@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/25 14:26:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:13:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title)
 			width, height, 0, mlx->vi->depth, InputOutput,
 			mlx->vi->visual, CWBackPixel | CWColormap | CWBorderPixel
 			| CWEventMask, &mlx->swa);
+	__mlx_prevent_resize(mlx, width, height);
 	mlx->glc = glXCreateContext(mlx->dpy, mlx->vi, NULL, GL_TRUE);
 	xgcv.foreground = -1;
 	xgcv.function = GXcopy;
@@ -42,6 +43,5 @@ void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title)
 	glXMakeCurrent(mlx->dpy, mlx->win, mlx->glc);
 	XClearWindow(mlx->dpy, mlx->win);
 	XMapRaised(mlx->dpy, mlx->win);
-	__mlx_prevent_resize(mlx, width, height);
 	return ((void *)1);
 }

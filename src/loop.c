@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/10 20:49:19 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/05/31 19:44:36 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	mlx_loop(t_mlx *mlx)
 {
 	XEvent	ev;
 
+	mlx->running = 1;
 	while (mlx->running)
 	{
 		while (mlx->running && XPending(mlx->dpy))
