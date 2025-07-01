@@ -6,8 +6,8 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:52:01 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/10 19:28:52 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:57:07 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"

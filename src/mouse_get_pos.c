@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 19:54:16 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/31 19:57:50 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:57:49 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"
 #include <X11/X.h>
 
 int	mlx_mouse_get_pos(t_mlx *mlx, t_window *win, int *x_ptr, int *y_ptr)

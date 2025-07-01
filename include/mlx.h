@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mlx_opengl.h                                       :+:      :+:    :+:   */
+/*   mlx.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/31 19:57:20 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:21:44 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MLX_OPENGL_H
-# define MLX_OPENGL_H
+#ifndef MLX_H
+# define MLX_H
+
+# define MLX_OPENGL
 
 # include <stdlib.h>
 # include <X11/X.h>
@@ -20,15 +22,23 @@
 # include <GL/gl.h>
 # include <GL/glx.h>
 
-typedef struct s_window {
+typedef struct s_hook
+{
+	int		mask;
+	int		(*hook)(void *);
+	void	*param;
+}	t_hook;
+
+typedef struct s_window
+{
 	Window				xwin;
 	struct s_window		*next;
+	t_hook				hooks[LASTEvent];
 }	t_window;
 
 typedef struct s_mlx
 {
 	Window					root;
-	Window					win;
 	Colormap				cmap;
 	XSetWindowAttributes	swa;
 	XWindowAttributes		gwa;
@@ -42,45 +52,47 @@ typedef struct s_mlx
 	XVisualInfo				*vi;
 	int						(*loop_hook)(void *);
 	void					*loop_param;
+	Atom					wm_delete;
+	Atom					wm_protocols;
 }	t_mlx;
 
 t_mlx	*mlx_init(void);
 void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title);
-int		mlx_clear_window(t_mlx *mlx, void *win);
-int		mlx_pixel_put(t_mlx *mlx, void *win, int x, int y, int color);
+int		mlx_clear_window(t_mlx *mlx, t_window *win);
+int		mlx_pixel_put(t_mlx *mlx, t_window *win, int x, int y, int color);
 void	*mlx_new_image(t_mlx *mlx, int width, int height);
 char	*mlx_get_data_addr(void *img, int *bpp, int *line, int *endianness);
 int		mlx_put_image_to_window(t_mlx *mlx, void *win, void *img, int x, int y);
 int		mlx_get_color_value(t_mlx *mlx, int color);
-int		mlx_mouse_hook(void *win, int (*fn)(), void *param);
-int		mlx_key_hook(void *win, int (*fn)(), void *param);
-int		mlx_expose_hook(void *win, int (*fn)(), void *param);
+int		mlx_mouse_hook(t_window *win, int (*fn)(), void *param);
+int		mlx_key_hook(t_window *win, int (*fn)(), void *param);
+int		mlx_expose_hook(t_window *win, int (*fn)(), void *param);
 int		mlx_loop_hook(t_mlx *mlx, int (*fn)(void *), void *param);
 int		mlx_loop(t_mlx *mlx);
 int		mlx_loop_end(t_mlx *mlx);
-int		mlx_string_put(t_mlx *mlx, void *win, int x, int y, int color,
+int		mlx_string_put(t_mlx *mlx, t_window *win, int x, int y, int color,
 			const char *string);
-int		mlx_set_font(t_mlx *mlx, void *win, const char *name);
+int		mlx_set_font(t_mlx *mlx, t_window *win, const char *name);
 void	*mlx_xpm_to_image(t_mlx *mlx, char **xpm_data, int *width, int *height);
 void	*mlx_xpm_file_to_image(t_mlx *mlx, const char *filename,
 			int *width, int *height);
-int		mlx_destroy_window(t_mlx *mlx, void *win);
+int		mlx_destroy_window(t_mlx *mlx, t_window *win);
 int		mlx_destroy_image(t_mlx *mlx, void *img);
 int		mlx_destroy_display(t_mlx *mlx);
-int		mlx_hook(void *win, int x_event, int x_mask, int (*fn)(), void *param);
+int		mlx_hook(t_window *win, int x_event, int x_mask, int (*fn)(), void *param);
 int		mlx_do_key_autorepeaton(t_mlx *mlx);
 int		mlx_do_key_autorepeatoff(t_mlx *mlx);
 int		mlx_do_sync(t_mlx *mlx);
 int		mlx_mouse_get_pos(t_mlx *mlx, t_window *win, int *x_ptr, int *y_ptr);
-int		mlx_mouse_move(t_mlx *mlx, void *win, int x, int y);
-int		mlx_mouse_hide(t_mlx *mlx, void *win);
-int		mlx_mouse_show(t_mlx *mlx, void *win);
+int		mlx_mouse_move(t_mlx *mlx, t_window *win, int x, int y);
+int		mlx_mouse_hide(t_mlx *mlx, t_window *win);
+int		mlx_mouse_show(t_mlx *mlx, t_window *win);
 int		mlx_get_screen_size(t_mlx *mlx, int *width, int *height);
 
 int		__mlx_init_display(t_mlx *mlx);
 int		__mlx_glx_check_version(t_mlx *mlx);
 int		__mlx_init_opengl(t_mlx *mlx);
 int		__mlx_get_visual(t_mlx *mlx);
-void	__mlx_prevent_resize(t_mlx *mlx, int width, int height);
+void	__mlx_prevent_resize(t_mlx *mlx, t_window *win, int width, int height);
 
 #endif

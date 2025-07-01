@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:47:59 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/10 22:39:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:58:29 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <sys/types.h>

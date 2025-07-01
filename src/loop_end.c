@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 19:41:27 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/31 19:42:00 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:57:43 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"
 
 int	mlx_loop_end(t_mlx *mlx)
 {

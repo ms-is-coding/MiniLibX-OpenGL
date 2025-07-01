@@ -1,30 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pixel_put.c                                        :+:      :+:    :+:   */
+/*   hook.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/10 03:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 16:10:16 by smamalig         ###   ########.fr       */
+/*   Created: 2025/07/01 15:20:36 by smamalig          #+#    #+#             */
+/*   Updated: 2025/07/01 15:26:22 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 
-int	mlx_pixel_put(t_mlx *mlx, t_window *win,
-	int x, int y, int color)
+int	mlx_hook(t_window *win, int x_event, int x_mask, int (*fn)(), void *param)
 {
-	(void)win;
-	(void)mlx;
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0, 800, 600, 0, -1, 1);
-	glMatrixMode(GL_MODELVIEW);
-	glBegin(GL_POINTS);
-	glColor4ub((color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff,
-		(color >> 24) & 0xff);
-	glVertex2i(x, y);
-	glEnd();
+	win->hooks[x_event].hook = fn;
+	win->hooks[x_event].param = param;
+	win->hooks[x_event].mask = x_mask;
 	return (0);
 }

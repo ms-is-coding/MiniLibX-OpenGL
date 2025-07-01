@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:22:57 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/10 18:23:49 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:57:14 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"
 #include <stdio.h>
 
 int	__mlx_glx_check_version(t_mlx *mlx)

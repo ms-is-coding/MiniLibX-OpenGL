@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 20:16:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/11 11:27:11 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 10:56:41 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"
 
 int	mlx_destroy_display(t_mlx *mlx)
 {

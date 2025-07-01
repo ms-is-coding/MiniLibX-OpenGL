@@ -6,17 +6,18 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 01:18:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/05/31 20:08:56 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:08:55 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx_opengl.h"
+#include "mlx.h"
 #include <GL/gl.h>
+#include <X11/X.h>
 #include <unistd.h>
 
 int	render(void *mlx)
 {
-	mlx_mouse_move(mlx, NULL, 400, 300);
+	(void)mlx;
 	glBegin(GL_TRIANGLES);
 	glColor3f(1, 0, 0);
 	glVertex2f(-0.5, -0.5);
@@ -25,6 +26,11 @@ int	render(void *mlx)
 	glColor3f(0, 0, 1);
 	glVertex2f(0, 0.5);
 	glEnd();
+	return (0);
+}
+
+int	on_destroy()
+{
 	return (0);
 }
 
@@ -39,9 +45,10 @@ int	main(void)
 	win = mlx_new_window(mlx, 800, 600, "Test");
 	if (!win)
 		return (1);
+	mlx_hook(win, DestroyNotify, 0, on_destroy, NULL);
 	mlx_loop_hook(mlx, render, mlx);
 	mlx_loop(mlx);
-	mlx_destroy_window(mlx, NULL);
+	mlx_destroy_window(mlx, win);
 	mlx_destroy_display(mlx);
 	free(mlx);
 	return (0);

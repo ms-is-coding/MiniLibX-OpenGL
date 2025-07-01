@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/05/25 14:06:06 by smamalig         ###   ########.fr        #
+#    Updated: 2025/07/01 16:56:05 by smamalig         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS     = -Wall -Wextra -MMD -MP
 SRC_FILES  = init.c get_visual.c new_window.c loop.c pixel_put.c \
 	glx_check_version.c init_opengl.c init_display.c prevent_resize.c \
 	destroy_display.c destroy_window.c xpm_file_to_image.c mouse_hide.c \
-	mouse_show.c mouse_move.c
+	mouse_show.c mouse_move.c hook.c
 TEST_FILES = triangle.test.c
 SRC_DIR    = src
 OBJ_DIR    = obj
