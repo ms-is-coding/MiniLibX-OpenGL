@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 17:26:59 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/07/01 17:29:24 by smamalig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	mlx_loop(t_mlx *mlx)
 				win = win->next;
 			if (win && ev.type == ClientMessage
 				&& ev.xclient.message_type == mlx->wm_protocols
-				&& ev.xclient.data.l[0] == mlx->wm_delete
+				&& (unsigned long)ev.xclient.data.l[0] == mlx->wm_delete
 				&& win->hooks[DestroyNotify].hook)
 				win->hooks[DestroyNotify].hook(win->hooks[DestroyNotify].param);
 		}
