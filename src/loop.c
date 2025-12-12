@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 14:59:40 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:26:10 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	mlx_loop(t_mlx *mlx)
 {
 	XEvent		ev;
 	t_window	*win;
+	KeySym		keysym;
+	int			(*hook_fn)(int, void *);
 
 	mlx_set_win_event_mask(mlx);
 	mlx->running = true;
@@ -96,6 +98,12 @@ int	mlx_loop(t_mlx *mlx)
 				&& (unsigned long)ev.xclient.data.l[0] == mlx->wm_delete
 				&& win->hooks[DestroyNotify].hook)
 				win->hooks[DestroyNotify].hook(win->hooks[DestroyNotify].param);
+			else if (win && ev.type == KeyPress && win->hooks[KeyPress].hook)
+			{
+				keysym = XLookupKeysym(&ev.xkey, 0);
+				hook_fn = (void *)win->hooks[KeyPress].hook;
+				hook_fn((int)keysym, win->hooks[KeyPress].param);
+			}
 			else if (win && win->hooks[ev.type].hook)
 				win->hooks[ev.type].hook(win->hooks[ev.type].param);
 		}

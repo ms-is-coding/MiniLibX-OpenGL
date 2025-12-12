@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 01:18:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 15:04:27 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:24:33 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,20 @@
 
 int	on_destroy(void *param)
 {
-	t_mlx	*mlx = param;
+	t_mlx	*mlx;
+
+	mlx = (t_mlx *)param;
 	mlx_loop_end(mlx);
+	return (0);
+}
+
+int	on_keypress(int keysim, void *param)
+{
+	t_mlx	*mlx;
+
+	mlx = (t_mlx *)param;
+	if (keysim == XK_Escape)
+		mlx_loop_end(mlx);
 	return (0);
 }
 
@@ -45,16 +57,20 @@ int	render(void *param)
 
 int	main(void)
 {
-	t_mlx	*mlx;
-	void	*win;
+	t_mlx		*mlx;
+	t_window	*win;
 
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
 	win = mlx_new_window(mlx, 800, 600, "Test");
 	if (!win)
+	{
+		free(mlx);
 		return (1);
+	}
 	mlx_hook(win, DestroyNotify, 0, on_destroy, mlx);
+	mlx_hook(win, KeyPress, KeyPressMask, on_keypress, mlx);
 	mlx_loop_hook(mlx, render, mlx);
 	mlx_loop(mlx);
 	mlx_destroy_window(mlx, win);
