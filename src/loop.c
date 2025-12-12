@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 14:43:20 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:59:40 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	mlx_loop(t_mlx *mlx)
 		{
 			XNextEvent(mlx->dpy, &ev);
 			win = mlx->win_list;
-			while (win->next && (win->next->xwin != ev.xany.window))
+			while (win && (win->xwin != ev.xany.window))
 				win = win->next;
 			if (win && ev.type == ClientMessage
 				&& ev.xclient.message_type == mlx->wm_protocols
@@ -102,7 +102,7 @@ int	mlx_loop(t_mlx *mlx)
 		if (mlx->loop_hook)
 			mlx->loop_hook(mlx->loop_param);
 		win = mlx->win_list;
-		while (win->next)
+		while (win)
 		{
 			if (win->pixel_buffer)
 			{
