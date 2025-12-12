@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 07:45:53 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:00:56 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,16 @@
 # include <X11/X.h>
 # include <X11/Xlib.h>
 # include <X11/Xutil.h>
+
+typedef struct	s_img {
+	int	*buffer;
+	int	width;
+	int	height;
+	int	bpp;
+	int	line_len;
+	int	endian;
+	int	padding;
+}	t_img;
 
 typedef struct s_hook
 {
