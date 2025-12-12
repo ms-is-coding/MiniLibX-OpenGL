@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 08:08:45 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 08:17:50 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ static void	*cleanup_window(t_mlx *mlx, t_window *window)
 	}
 	if (window->xwin)
 		XDestroyWindow(mlx->dpy, window->xwin);
+	if (window->pixel_buffer)
+	{
+		free(window->pixel_buffer);
+		window->pixel_buffer = NULL;
+	}
 	free(window);
 	return (NULL);
 }
@@ -51,6 +56,11 @@ static bool	create_x11_window(t_mlx *mlx, t_window *window, const int w,
 	mlx->swa = swa;
 	if (!window->xwin)
 		return (false);
+	window->pixel_buffer = calloc(w * h, sizeof(int));
+	if (!window->pixel_buffer)
+		return (false);
+	window->width = w;
+	window->height = h;
 	__mlx_prevent_resize(mlx, window, w, h);
 	return (true);
 }
