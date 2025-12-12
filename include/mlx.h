@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 07:23:25 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 07:45:53 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,13 @@ typedef struct s_hook
 
 typedef struct s_window
 {
-	Window				xwin;
 	struct s_window		*next;
+	Window				xwin;
+	int					*pixel_buffer;
+	GLuint				texture_id;
+	int					width;
+	int					height;
+	int					padding;
 	t_hook				hooks[LASTEvent];
 }	t_window;
 
