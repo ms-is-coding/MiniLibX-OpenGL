@@ -3,6 +3,7 @@ build/
 .cache/
 compile_commands.json
 mlx_tests
+*.xpm
 
 # Prerequisites
 *.d
