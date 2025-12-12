@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/12 06:46:06 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/12 06:55:19 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,10 +29,11 @@ LDFLAGS		= -L. -lmlx -lX11 -lGL
 CFLAGS		= -Wall -Wextra -MMD -MP -Iinclude
 
 # Project files
-SRC_FILES 	= init.c get_visual.c new_window.c loop.c pixel_put.c \
-	glx_check_version.c init_opengl.c init_display.c prevent_resize.c \
-	destroy_display.c destroy_window.c xpm_file_to_image.c mouse_hide.c \
-	mouse_show.c mouse_move.c hook.c
+SRC_FILES 	= autorepeat.c clear_window.c destroy_display.c destroy_window.c \
+				do_sync.c get_screen_size.c get_visual.c glx_check_version.c \
+				hook.c init.c init_display.c init_opengl.c loop.c loop_end.c \
+				mouse_get_pos.c mouse_hide.c mouse_show.c new_window.c \
+				pixel_put.c prevent_resize.c xpm_file_to_image.c
 TEST_FILES	= triangle.test.c
 
 SRCS      	:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
