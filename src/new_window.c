@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 08:17:50 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:19:49 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static bool	create_x11_window(t_mlx *mlx, t_window *window, const int w,
 	return (true);
 }
 
-static bool	setup_graphic_context(t_mlx *mlx, const t_window *window)
+static bool	setup_graphic_context(t_mlx *mlx, t_window *window)
 {
 	XGCValues	xgcv;
 
@@ -81,6 +81,15 @@ static bool	setup_graphic_context(t_mlx *mlx, const t_window *window)
 		return (false);
 	if (!glXMakeCurrent(mlx->dpy, window->xwin, mlx->glc))
 		return (false);
+	glGenTextures(1, &window->texture_id);
+	glBindTexture(GL_TEXTURE_2D, window->texture_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, window->width, window->height, 0,
+		GL_BGRA, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	return (true);
 }
 
