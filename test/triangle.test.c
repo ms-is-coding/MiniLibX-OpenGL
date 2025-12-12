@@ -6,31 +6,40 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 01:18:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 06:50:31 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:04:27 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
-#include <GL/gl.h>
-#include <X11/X.h>
-#include <unistd.h>
 
-int	render(void *mlx)
+int	on_destroy(void *param)
 {
-	(void)mlx;
-	glBegin(GL_TRIANGLES);
-	glColor3f(1, 0, 0);
-	glVertex2f(-0.5, -0.5);
-	glColor3f(0, 1, 0);
-	glVertex2f(0.5, -0.5);
-	glColor3f(0, 0, 1);
-	glVertex2f(0, 0.5);
-	glEnd();
+	t_mlx	*mlx = param;
+	mlx_loop_end(mlx);
 	return (0);
 }
 
-int	on_destroy(void)
+int	render(void *param)
 {
+	t_mlx		*mlx = param;
+	t_window	*win = mlx->win_list;
+	int			x, y;
+	static int	offset = 0;
+
+	if (!win || !win->pixel_buffer)
+		return (1);
+	for (y = 0; y < win->height; y++)
+	{
+		for (x = 0; x < win->width; x++)
+		{
+			int r = (x + offset) & 0xFF;
+			int g = (y + offset) & 0xFF;
+			int b = (x + y) & 0xFF;
+			int color = (0xFF << 24) | (r << 16) | (g << 8) | b;
+			mlx_pixel_put(mlx, win, x, y, color);
+		}
+	}
+	offset++;
 	return (0);
 }
 
@@ -45,7 +54,7 @@ int	main(void)
 	win = mlx_new_window(mlx, 800, 600, "Test");
 	if (!win)
 		return (1);
-	mlx_hook(win, DestroyNotify, 0, on_destroy, NULL);
+	mlx_hook(win, DestroyNotify, 0, on_destroy, mlx);
 	mlx_loop_hook(mlx, render, mlx);
 	mlx_loop(mlx);
 	mlx_destroy_window(mlx, win);
