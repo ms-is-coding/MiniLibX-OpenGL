@@ -6,28 +6,41 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/07/01 16:56:05 by smamalig         ###   ########.fr        #
+#    Updated: 2025/12/12 06:46:06 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME       = libmlx.a
-CC         = cc
-CFLAGS     = -Wall -Wextra -MMD -MP
-SRC_FILES  = init.c get_visual.c new_window.c loop.c pixel_put.c \
+# Project
+NAME		:= libmlx.a
+DEBUG_NAME	:= libmlx_debug.a
+
+TEST_NAME	:= mlx_tests
+
+# Directories
+SRC_DIR		= src
+BUILD_DIR	= build
+PROJ_B_DIR	= $(BUILD_DIR)/mlx
+TEST_DIR	= test
+TEST_B_DIR	= $(BUILD_DIR)/test
+
+# Compiler
+CC			= cc
+LDFLAGS		= -L. -lmlx -lX11 -lGL
+CFLAGS		= -Wall -Wextra -MMD -MP -Iinclude
+
+# Project files
+SRC_FILES 	= init.c get_visual.c new_window.c loop.c pixel_put.c \
 	glx_check_version.c init_opengl.c init_display.c prevent_resize.c \
 	destroy_display.c destroy_window.c xpm_file_to_image.c mouse_hide.c \
 	mouse_show.c mouse_move.c hook.c
-TEST_FILES = triangle.test.c
-SRC_DIR    = src
-OBJ_DIR    = obj
-TEST_DIR   = test
-SRCS      := $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJS      := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
-DEPS      := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.d, $(SRCS))
-TESTS     := $(addprefix $(TEST_DIR)/, $(TESTS))
-TEST_OBJS := $(TESTS:%.c=%.o)
-INCLUDES   = -Iinclude
-LDFLAGS    = -lX11 -lGL -L. -lmlx
+TEST_FILES	= triangle.test.c
+
+SRCS      	:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJS      	:= $(patsubst $(SRC_DIR)/%.c, $(PROJ_B_DIR)/%.o, $(SRCS))
+DEPS      	:= $(OBJS:.o=.d)
+TESTS     	:= $(addprefix $(TEST_DIR)/, $(TEST_FILES))
+TEST_OBJS 	:= $(patsubst $(TEST_DIR)/%.c, $(TEST_B_DIR)/%.o, $(TESTS))
+TEST_DEPS 	:= $(TEST_OBJS:.o=.d)
 
 ifeq ($(DEBUG), 1)
 	CFLAGS += -Wpedantic -O0 -g3
@@ -35,25 +48,27 @@ else
 	CFLAGS += -Werror -O3
 endif
 
+# Rules
 all: $(NAME)
-
--include $(DEPS)
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+$(PROJ_B_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-test: $(TEST_OBJS)
+test: $(TEST_NAME)
 
-%.test: %.test.c $(NAME)
-	$(CC) $(CFLAGS) $(INCLUDES) $< $(LDFLAGS) -o $@
-	./$@
+$(TEST_NAME): $(TEST_OBJS) $(NAME)
+	$(CC) $(CFLAGS) $< $(LDFLAGS) -o $@
+
+$(TEST_B_DIR)/%.o: $(TEST_DIR)/%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ_DIR)
+	rm -rf $(BUILD_DIR)
 
 fclean: clean
 	rm -f $(NAME)
@@ -61,4 +76,6 @@ fclean: clean
 re: fclean
 	@make all
 	
-.PHONY: all clean fclean re
+.PHONY: all test clean fclean re
+
+-include $(DEPS) $(TEST_DEPS)
