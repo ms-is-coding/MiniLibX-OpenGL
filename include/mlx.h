@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 17:29:19 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:41:07 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ int		mlx_string_put(t_mlx *mlx, t_window *win, int x, int y, int color,
 			const char *string);
 int		mlx_set_font(t_mlx *mlx, t_window *win, const char *name);
 void	*mlx_xpm_to_image(t_mlx *mlx, char **xpm_data, int *width, int *height);
-void	*mlx_xpm_file_to_image(t_mlx *mlx, const char *filename,
-			int *width, int *height);
+void	*mlx_xpm_file_to_image(t_mlx *mlx, char *filename, int *width,
+			int *height);
 int		mlx_destroy_window(t_mlx *mlx, t_window *win);
 int		mlx_destroy_image(t_mlx *mlx, void *img_ptr);
 int		mlx_destroy_display(t_mlx *mlx);

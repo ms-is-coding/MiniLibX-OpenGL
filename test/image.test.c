@@ -6,11 +6,9 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 17:14:47 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/12 17:24:15 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:50:27 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdlib.h>
 
 #include "mlx.h"
 
@@ -28,7 +26,7 @@ int	on_destroy(void *param)
 	return (0);
 }
 
-int	on_keypress(int keysim, void *param)
+int	on_keypress(const int keysim, void *param)
 {
 	if (keysim == XK_Escape)
 		mlx_loop_end(((t_app *)param)->mlx);
@@ -37,30 +35,18 @@ int	on_keypress(int keysim, void *param)
 
 void	init_sprite(t_app *app)
 {
-	int	*data;
-	int	bpp;
-	int	sl;
-	int	end;
-
-	app->img_w = 100;
-	app->img_h = 100;
-	app->sprite = mlx_new_image(app->mlx, app->img_w, app->img_h);
-	data = (int *)mlx_get_data_addr(app->sprite, &bpp, &sl, &end);
-	for (int y = 0; y < app->img_h; y++)
+	app->sprite = mlx_xpm_file_to_image(app->mlx, "player.xpm",
+			&app->img_w, &app->img_h);
+	if (!app->sprite)
 	{
-		for (int x = 0; x < app->img_w; x++)
-		{
-			if (x < 5 || x >= 95 || y < 5 || y >= 95)
-				data[y * 100 + x] = 0xFFFFFFFF;
-			else
-			{
-				int r = 0;
-				int g = (x * 255) / 100;
-				int b = (y * 255) / 100;
-				data[y * 100 + x] = (0xFF << 24) | (r << 16) | (g << 8) | b;
-			}
-		}
+		printf("Critical Error: Could not load 'player.xpm'.\n");
+		printf("Make sure the file exists in the execution directory.\n");
+		mlx_destroy_window(app->mlx, app->window);
+		mlx_destroy_display(app->mlx);
+		free(app->mlx);
+		exit(1);
 	}
+	printf("Success: Image loaded (%dx%d pixels)\n", app->img_w, app->img_h);
 }
 
 int	render(void *param)
@@ -85,7 +71,7 @@ int	main(void)
 	app.mlx = mlx_init();
 	if (!app.mlx)
 		return (1);
-	app.window = mlx_new_window(app.mlx, 800, 600, "Image Test");
+	app.window = mlx_new_window(app.mlx, 800, 600, "XPM Loader Test");
 	if (!app.window)
 	{
 		free(app.mlx);
