@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 17:21:44 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/12 07:23:25 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,23 @@
 
 # define MLX_OPENGL
 
+// ReSharper disable CppUnusedIncludeDirective
+# include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
+
+# include <GL/gl.h>
+# include <GL/glx.h>
 # include <X11/X.h>
 # include <X11/Xlib.h>
 # include <X11/Xutil.h>
-# include <GL/gl.h>
-# include <GL/glx.h>
 
 typedef struct s_hook
 {
-	int		mask;
 	int		(*hook)(void *);
 	void	*param;
+	int		mask;
+	int		padding;
 }	t_hook;
 
 typedef struct s_window
@@ -38,22 +43,23 @@ typedef struct s_window
 
 typedef struct s_mlx
 {
-	Window					root;
-	Colormap				cmap;
-	XSetWindowAttributes	swa;
-	XWindowAttributes		gwa;
-	GLXContext				glc;
-	GC						gc;
-	int						scr_id;
-	int						running;
-	t_window				*win_list;
 	Display					*dpy;
+	Window					root;
 	Screen					*scr;
-	XVisualInfo				*vi;
+	t_window				*win_list;
 	int						(*loop_hook)(void *);
 	void					*loop_param;
+	XVisualInfo				*vi;
+	Colormap				cmap;
+	GLXContext				glc;
+	GC						gc;
 	Atom					wm_delete;
 	Atom					wm_protocols;
+	XSetWindowAttributes	swa;
+	XWindowAttributes		gwa;
+	int						scr_id;
+	bool					running;
+	char					padding[3];
 }	t_mlx;
 
 t_mlx	*mlx_init(void);
@@ -79,7 +85,8 @@ void	*mlx_xpm_file_to_image(t_mlx *mlx, const char *filename,
 int		mlx_destroy_window(t_mlx *mlx, t_window *win);
 int		mlx_destroy_image(t_mlx *mlx, void *img);
 int		mlx_destroy_display(t_mlx *mlx);
-int		mlx_hook(t_window *win, int x_event, int x_mask, int (*fn)(), void *param);
+int		mlx_hook(t_window *win, int x_event, int x_mask, int (*fn)(),
+			void *param);
 int		mlx_do_key_autorepeaton(t_mlx *mlx);
 int		mlx_do_key_autorepeatoff(t_mlx *mlx);
 int		mlx_do_sync(t_mlx *mlx);
@@ -95,4 +102,4 @@ int		__mlx_init_opengl(t_mlx *mlx);
 int		__mlx_get_visual(t_mlx *mlx);
 void	__mlx_prevent_resize(t_mlx *mlx, t_window *win, int width, int height);
 
-#endif
+#endif // MLX_H
