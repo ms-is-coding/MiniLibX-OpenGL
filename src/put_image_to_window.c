@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 15:33:28 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/12 17:12:14 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 17:52:55 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,19 @@ int	mlx_put_image_to_window(t_mlx *mlx, void *win_ptr, void *img_ptr, int x,
 	int			i;
 	int			offset_win;
 	int			offset_img;
+	int			src_x;
+	int			src_y;
 
 	(void)mlx;
 	win = (t_window *)win_ptr;
 	img = (t_img *)img_ptr;
 	if (!win || !win->pixel_buffer || !img || !img->buffer)
 		return (0);
-	if (x >= win->width || y >= win->height || x + img->width <= 0 || y + img->height <= 0)
+	if (x >= win->width || y >= win->height || x + img->width <= 0
+		|| y + img->height <= 0)
 		return (0);
-	int	src_x = 0;
-	int	src_y = 0;
+	src_x = 0;
+	src_y = 0;
 	copy_w = img->width;
 	copy_h = img->height;
 	if (x < 0)
@@ -58,8 +61,8 @@ int	mlx_put_image_to_window(t_mlx *mlx, void *win_ptr, void *img_ptr, int x,
 		offset_img = (src_y + i) * img->width + src_x;
 		offset_win = (y + i) * win->width + x;
 		memcpy(win->pixel_buffer + offset_win,
-			   img->buffer + offset_img,
-			   copy_w * sizeof(int));
+			img->buffer + offset_img,
+			copy_w * sizeof(int));
 		i++;
 	}
 	return (0);
