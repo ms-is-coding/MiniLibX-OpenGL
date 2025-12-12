@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 07:02:20 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/12 14:43:20 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,30 @@ static int	win_count(t_mlx *mlx)
 	return (i);
 }
 
+static void	render_frame(t_mlx *mlx, t_window *window)
+{
+	glXMakeCurrent(mlx->dpy, window->xwin, mlx->glc);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, window->texture_id);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, window->width, window->height,
+		GL_BGRA, GL_UNSIGNED_BYTE, window->pixel_buffer);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2f(-1.0f, 1.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex2f(1.0f, 1.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(1.0f, -1.0f);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(-1.0f, -1.0f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+}
+
 int	mlx_loop(t_mlx *mlx)
 {
 	XEvent		ev;
@@ -72,12 +96,21 @@ int	mlx_loop(t_mlx *mlx)
 				&& (unsigned long)ev.xclient.data.l[0] == mlx->wm_delete
 				&& win->hooks[DestroyNotify].hook)
 				win->hooks[DestroyNotify].hook(win->hooks[DestroyNotify].param);
+			else if (win && win->hooks[ev.type].hook)
+				win->hooks[ev.type].hook(win->hooks[ev.type].param);
 		}
-		XSync(mlx->dpy, False);
 		if (mlx->loop_hook)
 			mlx->loop_hook(mlx->loop_param);
-		// do this for every window
-		glXSwapBuffers(mlx->dpy, mlx->win_list->xwin);
+		win = mlx->win_list;
+		while (win->next)
+		{
+			if (win->pixel_buffer)
+			{
+				render_frame(mlx, win);
+				glXSwapBuffers(mlx->dpy, win->xwin);
+			}
+			win = win->next;
+		}
 	}
 	return (0);
 }
