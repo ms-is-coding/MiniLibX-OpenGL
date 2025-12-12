@@ -14,6 +14,6 @@
 
 int	mlx_loop_end(t_mlx *mlx)
 {
-	mlx->running = 0;
+	mlx->running = false;
 	return (1);
 }

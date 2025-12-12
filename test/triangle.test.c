@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 01:18:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 17:08:55 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/12 06:50:31 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	render(void *mlx)
 	return (0);
 }
 
-int	on_destroy()
+int	on_destroy(void)
 {
 	return (0);
 }

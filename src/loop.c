@@ -6,15 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 17:29:24 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/12 07:02:20 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
-#include <GL/gl.h>
-#include <GL/glx.h>
-#include <X11/X.h>
-#include <X11/Xlib.h>
 
 int	mlx_loop_hook(t_mlx *mlx, int (*fn)(void *), void *param)
 {
@@ -23,7 +19,7 @@ int	mlx_loop_hook(t_mlx *mlx, int (*fn)(void *), void *param)
 	return (0);
 }
 
-int	__mlx_set_win_event_mask(t_mlx *mlx)
+static void	mlx_set_win_event_mask(t_mlx *mlx)
 {
 	t_window				*win;
 	int						i;
@@ -39,15 +35,21 @@ int	__mlx_set_win_event_mask(t_mlx *mlx)
 		XChangeWindowAttributes(mlx->dpy, win->xwin, CWEventMask, &xswa);
 		win = win->next;
 	}
-	return (0);
 }
 
-int win_count(t_mlx *mlx)
+static int	win_count(t_mlx *mlx)
 {
-	int i = 0;
-	t_window *win = mlx->win_list;
-	while (win) { win = win->next; i++; }
-	return i;
+	int			i;
+	t_window	*win;
+
+	i = 0;
+	win = mlx->win_list;
+	while (win)
+	{
+		win = win->next;
+		i++;
+	}
+	return (i);
 }
 
 int	mlx_loop(t_mlx *mlx)
@@ -55,8 +57,8 @@ int	mlx_loop(t_mlx *mlx)
 	XEvent		ev;
 	t_window	*win;
 
-	__mlx_set_win_event_mask(mlx);
-	mlx->running = 1;
+	mlx_set_win_event_mask(mlx);
+	mlx->running = true;
 	while (win_count(mlx) && mlx->running)
 	{
 		while (mlx->running && XPending(mlx->dpy))

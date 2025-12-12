@@ -6,12 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:24:38 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 10:57:33 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/12 06:59:33 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
-#include <stdio.h>
 
 int	__mlx_init_opengl(t_mlx *mlx)
 {

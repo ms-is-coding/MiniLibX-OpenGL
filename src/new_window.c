@@ -6,21 +6,19 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 17:22:53 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/12 07:10:40 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <stdio.h>
-#include <string.h>
 
 void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title)
 {
-	XGCValues				xgcv = {};
-	t_window				*win = calloc(1, sizeof(t_window));
+	XGCValues	xgcv;
+	t_window	*win;
 
+	xgcv = (XGCValues){};
+	win = calloc(1, sizeof(t_window));
 	win->next = mlx->win_list;
 	mlx->win_list = win;
 	mlx->cmap = XCreateColormap(mlx->dpy, RootWindow(mlx->dpy, mlx->scr_id),
