@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 20:16:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/07/01 10:56:41 by smamalig         ###   ########.fr       */
+/*   Updated: 2025/12/12 15:19:39 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 int	mlx_destroy_display(t_mlx *mlx)
 {
-	XCloseDisplay(mlx->dpy);
+	if (mlx->glc)
+	{
+		glXDestroyContext(mlx->dpy, mlx->glc);
+		mlx->glc = NULL;
+	}
+	if (mlx->dpy)
+		XCloseDisplay(mlx->dpy);
 	return (0);
 }
