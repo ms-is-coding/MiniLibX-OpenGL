@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/13 19:47:31 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/13 20:15:59 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,12 @@ LDFLAGS		= -L. -lmlx -lX11 -lGL
 CFLAGS		= -Wall -Wextra -Wpadded -MMD -MP -Iinclude
 
 # Project files
-SRC_FILES 	= autorepeat.c clear_window.c destroy_display.c destroy_image.c \
-				destroy_window.c do_sync.c get_data_addr.c get_screen_size.c \
-				get_visual.c glx_check_version.c hook.c init.c init_display.c \
-				init_opengl.c loop.c loop_end.c mouse_get_pos.c mouse_hide.c \
-				mouse_show.c new_image.c new_window.c pixel_put.c prevent_resize.c \
+INTERN_F	= $(addprefix internal/, get_visual.c glx_check_version.c \
+				init_display.c init_opengl.c prevent_resize.c)
+SRC_FILES 	= $(INTERN_F) autorepeat.c clear_window.c destroy_display.c \
+				destroy_image.c destroy_window.c do_sync.c get_data_addr.c \
+				get_screen_size.c hook.c init.c loop.c loop_end.c mouse_get_pos.c \
+				mouse_hide.c mouse_show.c new_image.c new_window.c pixel_put.c \
 				put_image_to_window.c xpm_file_to_image.c
 TEST_FILES	= complex.test.c
 
