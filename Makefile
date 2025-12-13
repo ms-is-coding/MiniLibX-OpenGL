@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/13 15:34:11 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/13 19:47:31 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ TEST_B_DIR	= $(BUILD_DIR)/test
 
 # Compiler
 CC			= cc
-LDFLAGS		= -L. -lmlx -lX11 -lGL -lXpm
+LDFLAGS		= -L. -lmlx -lX11 -lGL
 CFLAGS		= -Wall -Wextra -Wpadded -MMD -MP -Iinclude
 
 # Project files
