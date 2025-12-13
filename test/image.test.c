@@ -6,9 +6,12 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 17:14:47 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/12 17:50:27 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:59:32 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "mlx.h"
 
