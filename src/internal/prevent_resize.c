@@ -6,13 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 18:32:41 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 07:11:02 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:08:09 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 
-#include "mlx.h"
+#include "mlx_internal.h"
 
 void	__mlx_prevent_resize(t_mlx *mlx, t_window *win, int width, int height)
 {

@@ -6,11 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 15:07:18 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:13:02 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "mlx.h"
+#include "mlx_internal.h"
 
 static void	*cleanup_window(t_mlx *mlx, t_window *window)
 {

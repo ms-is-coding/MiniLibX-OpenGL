@@ -6,11 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:41:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 06:59:19 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:12:31 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "mlx.h"
+#include "mlx_internal.h"
 
 t_mlx	*mlx_init(void)
 {

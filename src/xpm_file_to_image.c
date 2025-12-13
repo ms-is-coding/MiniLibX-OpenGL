@@ -6,12 +6,14 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:47:59 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/13 19:43:18 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:13:22 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ctype.h>
 #include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -20,7 +22,7 @@
 #define BUFF_SIZE 4096
 
 typedef struct s_xpm_col {
-	char		*str_code;
+	char		*code;
 	uint32_t	color;
 	char		padding[4];
 }	t_xpm_col;
@@ -34,7 +36,7 @@ typedef struct s_xpm_ctx {
 	int32_t		h;
 	int32_t		num_col;
 	int32_t		cpp;
-	uint32_t	lut_fast[256];
+	uint32_t	lut[256];
 }	t_xpm_ctx;
 
 static uint32_t	parse_hex_color(const char *str)
@@ -111,7 +113,7 @@ static void	parse_colors(t_xpm_ctx *ctx)
 	char	*line;
 	char	*color_start;
 
-	memset(ctx->lut_fast, 0, sizeof(uint32_t) * 256);
+	memset(ctx->lut, 0, sizeof(uint32_t) * 256);
 	i = 0;
 	while (i < ctx->num_col)
 	{
@@ -130,10 +132,10 @@ static void	parse_colors(t_xpm_ctx *ctx)
 			else
 				final_col = parse_hex_color(color_start);
 			if (ctx->cpp == 1)
-				ctx->lut_fast[(unsigned char)line[0]] = final_col;
+				ctx->lut[(unsigned char)line[0]] = final_col;
 			else
 			{
-				ctx->colors[i].str_code = strndup(line, ctx->cpp);
+				ctx->colors[i].code = strndup(line, ctx->cpp);
 				ctx->colors[i].color = final_col;
 			}
 		}
@@ -146,11 +148,11 @@ static uint32_t	get_pixel_color(t_xpm_ctx *ctx, char *ptr)
 	int	i;
 
 	if (ctx->cpp == 1)
-		return (ctx->lut_fast[(unsigned char)*ptr]);
+		return (ctx->lut[(unsigned char)*ptr]);
 	i = 0;
 	while (i < ctx->num_col)
 	{
-		if (strncmp(ptr, ctx->colors[i].str_code, ctx->cpp) == 0)
+		if (strncmp(ptr, ctx->colors[i].code, ctx->cpp) == 0)
 			return (ctx->colors[i].color);
 		i++;
 	}
@@ -212,7 +214,7 @@ void	*mlx_xpm_file_to_image(t_mlx *mlx, char *filename,
 	if (ctx.colors)
 	{
 		for (int i = 0; i < ctx.num_col; i++)
-			free(ctx.colors[i].str_code);
+			free(ctx.colors[i].code);
 		free(ctx.colors);
 	}
 	free(ctx.data);
