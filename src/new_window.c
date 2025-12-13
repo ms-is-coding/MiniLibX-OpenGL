@@ -6,14 +6,30 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/13 20:13:02 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:27:36 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "mlx.h"
 #include "mlx_internal.h"
+
+static void	disable_vsync(Display *dpy, Window drawable)
+{
+	PFNGLXSWAPINTERVALEXTPROC	interval_ext;
+
+	interval_ext = (PFNGLXSWAPINTERVALEXTPROC)glXGetProcAddress(
+			(const GLubyte*)"glXSwapIntervalEXT");
+	if (interval_ext)
+		interval_ext(dpy, drawable, 0);
+	else
+	{
+		printf("Warning: Could not load glXSwapIntervalEXT");
+		printf("VSync might remain active.\n");
+	}
+}
 
 static void	*cleanup_window(t_mlx *mlx, t_window *window)
 {
@@ -84,6 +100,7 @@ static bool	setup_graphic_context(t_mlx *mlx, t_window *window)
 		return (false);
 	if (!glXMakeCurrent(mlx->dpy, window->xwin, mlx->glc))
 		return (false);
+	disable_vsync(mlx->dpy, window->xwin);
 	glGenTextures(1, &window->texture_id);
 	glBindTexture(GL_TEXTURE_2D, window->texture_id);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
