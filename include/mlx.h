@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 00:37:24 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 17:41:07 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:01:59 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,68 +15,7 @@
 
 # define MLX_OPENGL
 
-// ReSharper disable CppUnusedIncludeDirective
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-
-# include <GL/gl.h>
-# include <GL/glx.h>
-# include <X11/X.h>
-# include <X11/Xlib.h>
-# include <X11/Xutil.h>
-
-typedef struct s_img
-{
-	int	*buffer;
-	int	width;
-	int	height;
-	int	bpp;
-	int	line_len;
-	int	endian;
-	int	padding;
-}	t_img;
-
-typedef struct s_hook
-{
-	int		(*hook)(void *);
-	void	*param;
-	int		mask;
-	int		padding;
-}	t_hook;
-
-typedef struct s_window
-{
-	struct s_window		*next;
-	Window				xwin;
-	int					*pixel_buffer;
-	GLuint				texture_id;
-	int					width;
-	int					height;
-	int					padding;
-	t_hook				hooks[LASTEvent];
-}	t_window;
-
-typedef struct s_mlx
-{
-	Display					*dpy;
-	Window					root;
-	Screen					*scr;
-	t_window				*win_list;
-	int						(*loop_hook)(void *);
-	void					*loop_param;
-	XVisualInfo				*vi;
-	Colormap				cmap;
-	GLXContext				glc;
-	GC						gc;
-	Atom					wm_delete;
-	Atom					wm_protocols;
-	XSetWindowAttributes	swa;
-	XWindowAttributes		gwa;
-	int						scr_id;
-	bool					running;
-	char					padding[3];
-}	t_mlx;
+# include "mlx_types.h"
 
 t_mlx	*mlx_init(void);
 void	*mlx_new_window(t_mlx *mlx, int width, int height, const char *title);
@@ -112,11 +51,5 @@ int		mlx_mouse_move(t_mlx *mlx, t_window *win, int x, int y);
 int		mlx_mouse_hide(t_mlx *mlx, t_window *win);
 int		mlx_mouse_show(t_mlx *mlx, t_window *win);
 int		mlx_get_screen_size(t_mlx *mlx, int *width, int *height);
-
-int		__mlx_init_display(t_mlx *mlx);
-int		__mlx_glx_check_version(t_mlx *mlx);
-int		__mlx_init_opengl(t_mlx *mlx);
-int		__mlx_get_visual(t_mlx *mlx);
-void	__mlx_prevent_resize(t_mlx *mlx, t_window *win, int width, int height);
 
 #endif // MLX_H
