@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 15:33:28 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/12 17:52:55 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:58:38 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,60 @@
 
 #include "mlx.h"
 
+typedef struct s_draw_ctx
+{
+	int	x;
+	int	y;
+	int	copy_w;
+	int	copy_h;
+	int	src_x;
+	int	src_y;
+}	t_draw_ctx;
+
+static void	calc_clipping(t_window *win, t_draw_ctx *ctx)
+{
+	if (ctx->x < 0)
+	{
+		ctx->src_x = -ctx->x;
+		ctx->copy_w += ctx->x;
+		ctx->x = 0;
+	}
+	if (ctx->y < 0)
+	{
+		ctx->src_y = -ctx->y;
+		ctx->copy_h += ctx->y;
+		ctx->y = 0;
+	}
+	if (ctx->x + ctx->copy_w > win->width)
+		ctx->copy_w = win->width - ctx->x;
+	if (ctx->y + ctx->copy_h > win->height)
+		ctx->copy_h = win->height - ctx->y;
+}
+
+static void	draw_lines(t_window *win, t_img *img, t_draw_ctx *ctx)
+{
+	int	i;
+	int	offset_win;
+	int	offset_img;
+
+	i = 0;
+	while (i < ctx->copy_h)
+	{
+		offset_img = (ctx->src_y + i) * img->width + ctx->src_x;
+		offset_win = (ctx->y + i) * win->width + ctx->x;
+		memcpy(win->pixel_buffer + offset_win,
+			img->buffer + offset_img,
+			ctx->copy_w * sizeof(int));
+		i++;
+	}
+}
+
 int	mlx_put_image_to_window(t_mlx *mlx, void *win_ptr, void *img_ptr, int x,
 		int y)
 {
 	t_window	*win;
 	t_img		*img;
-	int			copy_w;
-	int			copy_h;
-	int			i;
-	int			offset_win;
-	int			offset_img;
-	int			src_x;
-	int			src_y;
+	t_draw_ctx	ctx;
 
 	(void)mlx;
 	win = (t_window *)win_ptr;
@@ -35,35 +77,13 @@ int	mlx_put_image_to_window(t_mlx *mlx, void *win_ptr, void *img_ptr, int x,
 	if (x >= win->width || y >= win->height || x + img->width <= 0
 		|| y + img->height <= 0)
 		return (0);
-	src_x = 0;
-	src_y = 0;
-	copy_w = img->width;
-	copy_h = img->height;
-	if (x < 0)
-	{
-		src_x = -x;
-		copy_w += x;
-		x = 0;
-	}
-	if (y < 0)
-	{
-		src_y = -y;
-		copy_h += y;
-		y = 0;
-	}
-	if (x + copy_w > win->width)
-		copy_w = win->width - x;
-	if (y + copy_h > win->height)
-		copy_h = win->height - y;
-	i = 0;
-	while (i < copy_h)
-	{
-		offset_img = (src_y + i) * img->width + src_x;
-		offset_win = (y + i) * win->width + x;
-		memcpy(win->pixel_buffer + offset_win,
-			img->buffer + offset_img,
-			copy_w * sizeof(int));
-		i++;
-	}
+	ctx.src_x = 0;
+	ctx.src_y = 0;
+	ctx.copy_w = img->width;
+	ctx.copy_h = img->height;
+	ctx.x = x;
+	ctx.y = y;
+	calc_clipping(win, &ctx);
+	draw_lines(win, img, &ctx);
 	return (0);
 }
