@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/12 17:33:44 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/13 15:34:11 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRC_FILES 	= autorepeat.c clear_window.c destroy_display.c destroy_image.c \
 				init_opengl.c loop.c loop_end.c mouse_get_pos.c mouse_hide.c \
 				mouse_show.c new_image.c new_window.c pixel_put.c prevent_resize.c \
 				put_image_to_window.c xpm_file_to_image.c
-TEST_FILES	= image.test.c
+TEST_FILES	= complex.test.c
 
 SRCS      	:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS      	:= $(patsubst $(SRC_DIR)/%.c, $(PROJ_B_DIR)/%.o, $(SRCS))
