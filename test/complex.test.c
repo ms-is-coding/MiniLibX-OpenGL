@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 21:48:48 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/13 15:55:35 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 22:18:36 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,25 @@ static inline void update_physics(const t_app *app, const int count)
 
 int render_loop(void *param)
 {
-    t_app *app = param;
-    uint64_t t0, t1, t2;
+    t_app       *app = param;
+    uint64_t    t0, t1, t2;
 
     t0 = get_time_ns();
     mlx_clear_window(app->mlx, app->window);
     update_physics(app, app->active_count);
     t1 = get_time_ns();
-    const int count = app->active_count;
+    const int   count = app->active_count;
+    int         *buffer = app->window->pixel_buffer;
+    const int   width = app->window->width;
+    const int   height = app->window->height;
     for (int i = 0; i < count; i++)
     {
-        const t_particle p = app->particles[i];
-        if (p.x >= 0 && p.x < WINDOW_WIDTH && p.y >= 0 && p.y < WINDOW_HEIGHT)
-            mlx_pixel_put(app->mlx, app->window, (int)p.x, (int)p.y, (int)p.color);
+        const float px = app->particles[i].x;
+        const float py = app->particles[i].y;
+        const int   x = (int)px;
+        const int   y = (int)py;
+        if (x >= 0 && x < width && y >= 0 && y < height)
+            buffer[y * width + x] = (int)app->particles[i].color;
     }
     t2 = get_time_ns();
     app->profiler.frame_count++;
