@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/14 14:48:43 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 22:07:09 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ static void	*cleanup_window(t_mlx *mlx, t_window *window)
 		XDestroyWindow(mlx->dpy, window->xwin);
 	if (window->pbo_ids[0])
 		glDeleteBuffers(2, window->pbo_ids);
+	if (window->pixel_buffer)
+		free(window->pixel_buffer);
 	free(window);
 	return (NULL);
 }
@@ -53,7 +55,6 @@ static bool	init_persistent_pbos(t_window *win)
 	win->pbo_ptrs[1] = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, size, flags);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	win->pbo_index = 0;
-	win->pixel_buffer = win->pbo_ptrs[0];
 	win->fences[0] = 0;
 	win->fences[1] = 0;
 	if (!win->pbo_ptrs[0] || !win->pbo_ptrs[1])
@@ -126,6 +127,9 @@ void	*mlx_new_window(t_mlx *mlx, const int width, const int height,
 	window = calloc(1, sizeof(t_window));
 	if (!window)
 		return (NULL);
+	window->pixel_buffer = calloc(width * height, sizeof(int));
+	if (!window->pixel_buffer)
+		return (cleanup_window(mlx, window));
 	if (!create_x11_window(mlx, window, width, height))
 		return (cleanup_window(mlx, window));
 	if (!setup_graphic_context(mlx, window))

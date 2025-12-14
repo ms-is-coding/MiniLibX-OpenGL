@@ -6,11 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/14 14:52:11 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 22:12:58 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include <string.h>
 
 #include "mlx.h"
 
@@ -56,9 +56,11 @@ static int	win_count(t_mlx *mlx)
 
 static void	render_frame(t_mlx *mlx, t_window *win)
 {
-	const int	curr_id = win->pbo_index;
-	const int	next_id = (win->pbo_index + 1) % 2;
+	const int		curr_id = win->pbo_index;
+	const int		next_id = (win->pbo_index + 1) % 2;
+	const size_t	size = win->width * win->height * 4;
 
+	memcpy(win->pbo_ptrs[curr_id], win->pixel_buffer, size);
 	glXMakeCurrent(mlx->dpy, win->xwin, mlx->glc);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, win->pbo_ids[curr_id]);
 	glEnable(GL_TEXTURE_2D);
@@ -69,7 +71,6 @@ static void	render_frame(t_mlx *mlx, t_window *win)
 		glDeleteSync(win->fences[curr_id]);
 	win->fences[curr_id] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	win->pbo_index = next_id;
-	win->pixel_buffer = win->pbo_ptrs[next_id];
 	if (win->fences[next_id])
 	{
 		glClientWaitSync(win->fences[next_id],
