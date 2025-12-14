@@ -6,11 +6,12 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/13 20:54:50 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:48:43 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "mlx.h"
 #include "mlx_internal.h"
@@ -29,13 +30,35 @@ static void	*cleanup_window(t_mlx *mlx, t_window *window)
 	}
 	if (window->xwin)
 		XDestroyWindow(mlx->dpy, window->xwin);
-	if (window->pixel_buffer)
-	{
-		free(window->pixel_buffer);
-		window->pixel_buffer = NULL;
-	}
+	if (window->pbo_ids[0])
+		glDeleteBuffers(2, window->pbo_ids);
 	free(window);
 	return (NULL);
+}
+
+static bool	init_persistent_pbos(t_window *win)
+{
+	const size_t	size = win->width * win->height * 4;
+	GLbitfield		flags;
+
+	flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
+	glGenBuffers(2, win->pbo_ids);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, win->pbo_ids[0]);
+	glBufferStorage(GL_PIXEL_UNPACK_BUFFER, size, NULL, flags
+		| GL_DYNAMIC_STORAGE_BIT);
+	win->pbo_ptrs[0] = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, size, flags);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, win->pbo_ids[1]);
+	glBufferStorage(GL_PIXEL_UNPACK_BUFFER, size, NULL, flags
+		| GL_DYNAMIC_STORAGE_BIT);
+	win->pbo_ptrs[1] = glMapBufferRange(GL_PIXEL_UNPACK_BUFFER, 0, size, flags);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
+	win->pbo_index = 0;
+	win->pixel_buffer = win->pbo_ptrs[0];
+	win->fences[0] = 0;
+	win->fences[1] = 0;
+	if (!win->pbo_ptrs[0] || !win->pbo_ptrs[1])
+		return (false);
+	return (true);
 }
 
 static bool	create_x11_window(t_mlx *mlx, t_window *window, const int w,
@@ -58,9 +81,6 @@ static bool	create_x11_window(t_mlx *mlx, t_window *window, const int w,
 			&swa);
 	mlx->swa = swa;
 	if (!window->xwin)
-		return (false);
-	window->pixel_buffer = calloc(w * h, sizeof(int));
-	if (!window->pixel_buffer)
 		return (false);
 	window->width = w;
 	window->height = h;
@@ -109,6 +129,8 @@ void	*mlx_new_window(t_mlx *mlx, const int width, const int height,
 	if (!create_x11_window(mlx, window, width, height))
 		return (cleanup_window(mlx, window));
 	if (!setup_graphic_context(mlx, window))
+		return (cleanup_window(mlx, window));
+	if (!init_persistent_pbos(window))
 		return (cleanup_window(mlx, window));
 	XStoreName(mlx->dpy, window->xwin, title);
 	XSetWMProtocols(mlx->dpy, window->xwin, &(mlx->wm_delete), 1);

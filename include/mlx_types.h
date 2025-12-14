@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:54:10 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/13 20:01:28 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:45:30 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,13 @@ typedef struct s_window
 	struct s_window		*next;
 	Window				xwin;
 	int					*pixel_buffer;
+	GLsync				fences[2];
+	int					*pbo_ptrs[2];
 	GLuint				texture_id;
+	GLuint				pbo_ids[2];
+	int					pbo_index;
 	int					width;
 	int					height;
-	int					padding;
 	t_hook				hooks[MLX_MAX_EVENT];
 }	t_window;
 

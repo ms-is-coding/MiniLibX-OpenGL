@@ -6,9 +6,11 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/12 15:26:10 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 14:52:11 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
 
 #include "mlx.h"
 
@@ -52,13 +54,28 @@ static int	win_count(t_mlx *mlx)
 	return (i);
 }
 
-static void	render_frame(t_mlx *mlx, t_window *window)
+static void	render_frame(t_mlx *mlx, t_window *win)
 {
-	glXMakeCurrent(mlx->dpy, window->xwin, mlx->glc);
+	const int	curr_id = win->pbo_index;
+	const int	next_id = (win->pbo_index + 1) % 2;
+
+	glXMakeCurrent(mlx->dpy, win->xwin, mlx->glc);
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, win->pbo_ids[curr_id]);
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, window->texture_id);
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, window->width, window->height,
-		GL_BGRA, GL_UNSIGNED_BYTE, window->pixel_buffer);
+	glBindTexture(GL_TEXTURE_2D, win->texture_id);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, win->width, win->height,
+		GL_BGRA, GL_UNSIGNED_BYTE, 0);
+	if (win->fences[curr_id])
+		glDeleteSync(win->fences[curr_id]);
+	win->fences[curr_id] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+	win->pbo_index = next_id;
+	win->pixel_buffer = win->pbo_ptrs[next_id];
+	if (win->fences[next_id])
+	{
+		glClientWaitSync(win->fences[next_id],
+			GL_SYNC_FLUSH_COMMANDS_BIT, 1000000000);
+	}
+	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
