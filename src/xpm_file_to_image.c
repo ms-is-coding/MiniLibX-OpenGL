@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 21:47:59 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/13 20:13:22 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 22:41:13 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,10 @@ static int	load_file_content(const char *filename, t_xpm_ctx *ctx)
 
 static void	parse_colors(t_xpm_ctx *ctx)
 {
-	int		i;
-	char	*line;
-	char	*color_start;
+	int			i;
+	char		*line;
+	char		*color_start;
+	uint32_t	final_col;
 
 	memset(ctx->lut, 0, sizeof(uint32_t) * 256);
 	i = 0;
@@ -126,7 +127,6 @@ static void	parse_colors(t_xpm_ctx *ctx)
 			color_start += 2;
 			while (*color_start == ' ')
 				color_start++;
-			uint32_t final_col;
 			if (strncasecmp(color_start, "None", 4) == 0)
 				final_col = 0x00000000;
 			else
@@ -177,7 +177,7 @@ static void	fill_image_data(t_xpm_ctx *ctx, t_img *img)
 		while (x < ctx->w)
 		{
 			img->buffer[pixel_idx] = (int)get_pixel_color(ctx,
-				line + (x * ctx->cpp));
+					line + (x * ctx->cpp));
 			pixel_idx++;
 			x++;
 		}
@@ -196,7 +196,8 @@ void	*mlx_xpm_file_to_image(t_mlx *mlx, char *filename,
 	if (!load_file_content(filename, &ctx))
 		return (NULL);
 	header = get_next_quote(&ctx);
-	if (header && sscanf(header, "%d %d %d %d", &ctx.w, &ctx.h, &ctx.num_col, &ctx.cpp) != 4)
+	if (header && sscanf(header, "%d %d %d %d", &ctx.w, &ctx.h,
+			&ctx.num_col, &ctx.cpp) != 4)
 	{
 		header = get_next_quote(&ctx);
 		sscanf(header, "%d %d %d %d", &ctx.w, &ctx.h, &ctx.num_col, &ctx.cpp);
@@ -208,8 +209,10 @@ void	*mlx_xpm_file_to_image(t_mlx *mlx, char *filename,
 	{
 		parse_colors(&ctx);
 		fill_image_data(&ctx, img);
-		if (width) *width = ctx.w;
-		if (height) *height = ctx.h;
+		if (width)
+			*width = ctx.w;
+		if (height)
+			*height = ctx.h;
 	}
 	if (ctx.colors)
 	{

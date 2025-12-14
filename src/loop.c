@@ -6,20 +6,13 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/14 22:12:58 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/14 22:38:31 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 
 #include "mlx.h"
-
-int	mlx_loop_hook(t_mlx *mlx, int (*fn)(void *), void *param)
-{
-	mlx->loop_hook = fn;
-	mlx->loop_param = param;
-	return (0);
-}
 
 static void	mlx_set_win_event_mask(t_mlx *mlx)
 {
