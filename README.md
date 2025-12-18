@@ -96,9 +96,9 @@ Below is the implementation status of the standard MiniLibX functions:
 - [x] `mlx_loop_hook`
 - [x] `mlx_loop_end`
 - [x] `mlx_hook`
-- [ ] `mlx_mouse_hook`
-- [ ] `mlx_key_hook`
-- [ ] `mlx_expose_hook`
+- [x] `mlx_mouse_hook`
+- [x] `mlx_key_hook`
+- [x] `mlx_expose_hook`
 - [x] `mlx_mouse_get_pos`
 - [x] `mlx_mouse_move`
 - [x] `mlx_mouse_hide`
