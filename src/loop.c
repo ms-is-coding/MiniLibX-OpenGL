@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/14 22:38:31 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/20 14:46:22 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,8 @@ static void	render_frame(t_mlx *mlx, t_window *win)
 	win->fences[curr_id] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	win->pbo_index = next_id;
 	if (win->fences[next_id])
-	{
 		glClientWaitSync(win->fences[next_id],
 			GL_SYNC_FLUSH_COMMANDS_BIT, 1000000000);
-	}
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -92,7 +90,8 @@ int	mlx_loop(t_mlx *mlx)
 	XEvent		ev;
 	t_window	*win;
 	KeySym		keysym;
-	int			(*hook_fn)(int, void *);
+	int			(*key_fn)(int, void *);
+	int			(*mouse_fn)(int, int, int, void *);
 
 	mlx_set_win_event_mask(mlx);
 	mlx->running = true;
@@ -104,18 +103,26 @@ int	mlx_loop(t_mlx *mlx)
 			win = mlx->win_list;
 			while (win && (win->xwin != ev.xany.window))
 				win = win->next;
-			if (win && ev.type == ClientMessage
+			if (!win)
+				continue ;
+			if (ev.type == ClientMessage
 				&& ev.xclient.message_type == mlx->wm_protocols
 				&& (unsigned long)ev.xclient.data.l[0] == mlx->wm_delete
 				&& win->hooks[DestroyNotify].hook)
 				win->hooks[DestroyNotify].hook(win->hooks[DestroyNotify].param);
-			else if (win && ev.type == KeyPress && win->hooks[KeyPress].hook)
+			else if (ev.type == KeyPress && win->hooks[KeyPress].hook)
 			{
 				keysym = XLookupKeysym(&ev.xkey, 0);
-				hook_fn = (void *)win->hooks[KeyPress].hook;
-				hook_fn((int)keysym, win->hooks[KeyPress].param);
+				key_fn = (void *)win->hooks[KeyPress].hook;
+				key_fn((int)keysym, win->hooks[KeyPress].param);
 			}
-			else if (win && win->hooks[ev.type].hook)
+			else if (ev.type == ButtonPress && win->hooks[ButtonPress].hook)
+			{
+				mouse_fn = (void *)win->hooks[ButtonPress].hook;
+				mouse_fn(ev.xbutton.button, ev.xbutton.x, ev.xbutton.y,
+					win->hooks[ButtonPress].param);
+			}
+			else if (win->hooks[ev.type].hook)
 				win->hooks[ev.type].hook(win->hooks[ev.type].param);
 		}
 		if (mlx->loop_hook)
