@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:54:10 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/14 14:45:30 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/20 15:02:02 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_mlx
 	int						(*loop_hook)(void *);
 	void					*loop_param;
 	XVisualInfo				*vi;
+	XFontStruct				*font;
 	Colormap				cmap;
 	GLXContext				glc;
 	GC						gc;
