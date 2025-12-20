@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 14:07:42 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/20 20:24:15 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/20 20:30:10 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	*mlx_xpm_to_image(t_mlx *mlx, char **xpm_data, int *width, int *height)
 	if (!mlx || !xpm_data)
 		return (NULL);
 	if (sscanf(xpm_data[0], "%d %d %d %d", &ctx.w, &ctx.h, &ctx.num_col,
-		&ctx.cpp) != 4)
+			&ctx.cpp) != 4)
 		return (NULL);
 	ctx.data = xpm_data;
 	img = mlx_new_image(mlx, ctx.w, ctx.h);

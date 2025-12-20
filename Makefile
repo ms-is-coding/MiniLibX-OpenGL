@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/20 14:09:22 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/20 20:36:29 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ CFLAGS		= -Wall -Wextra -Wpadded -MMD -MP -Iinclude -DGL_GLEXT_PROTOTYPES
 
 # Project files
 INTERN_F	= $(addprefix internal/, get_visual.c glx_check_version.c \
-				init_display.c init_opengl.c prevent_resize.c)
+				init_display.c init_opengl.c prevent_resize.c read_xpm_file.c)
 SRC_FILES 	= $(INTERN_F) autorepeat.c clear_window.c destroy_display.c \
 				destroy_image.c destroy_window.c do_sync.c get_color_value.c \
 				get_data_addr.c get_screen_size.c hook.c init.c loop.c loop_end.c \
