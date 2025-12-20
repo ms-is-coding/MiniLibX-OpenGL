@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/14 22:39:03 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/20 14:09:22 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,10 +32,11 @@ CFLAGS		= -Wall -Wextra -Wpadded -MMD -MP -Iinclude -DGL_GLEXT_PROTOTYPES
 INTERN_F	= $(addprefix internal/, get_visual.c glx_check_version.c \
 				init_display.c init_opengl.c prevent_resize.c)
 SRC_FILES 	= $(INTERN_F) autorepeat.c clear_window.c destroy_display.c \
-				destroy_image.c destroy_window.c do_sync.c get_data_addr.c \
-				get_screen_size.c hook.c init.c loop.c loop_end.c loop_hook.c \
-				mouse_get_pos.c mouse_hide.c mouse_show.c new_image.c new_window.c \
-				pixel_put.c put_image_to_window.c xpm_file_to_image.c
+				destroy_image.c destroy_window.c do_sync.c get_color_value.c \
+				get_data_addr.c get_screen_size.c hook.c init.c loop.c loop_end.c \
+				loop_hook.c mouse_get_pos.c mouse_hide.c mouse_show.c new_image.c \
+				new_window.c pixel_put.c put_image_to_window.c set_font.c string_put.c \
+				xpm_file_to_image.c xpm_to_image.c
 TEST_FILES	= complex.test.c
 
 SRCS      	:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
