@@ -85,10 +85,10 @@ Below is the implementation status of the standard MiniLibX functions:
 - [x] `mlx_put_image_to_window`
 - [x] `mlx_xpm_file_to_image`
 - [x] `mlx_destroy_image`
-- [ ] `mlx_get_color_value`
-- [ ] `mlx_string_put`
-- [ ] `mlx_set_font`
-- [ ] `mlx_xpm_to_image`
+- [x] `mlx_get_color_value`
+- [x] `mlx_string_put`
+- [x] `mlx_set_font`
+- [x] `mlx_xpm_to_image`
 
 ### Events & Input
 
