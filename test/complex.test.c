@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/12 21:48:48 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/14 22:18:36 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:52:54 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void init_system(t_app *app)
             .y = (float)(rand() % WINDOW_HEIGHT),
             .vx = ((float)(rand() % 200) / 50.0f) - 2.0f,
             .vy = ((float)(rand() % 200) / 50.0f) - 2.0f,
-            .color = (0xFF << 24) |
+            .color = (0xFFU << 24) |
                      (((i * 255 / MAX_PARTICLES) & 0xFF) << 16) |
                      (((255 - (i * 255 / MAX_PARTICLES)) & 0xFF) << 8) |
                      0xFF
@@ -169,6 +169,13 @@ static int on_keypress(const int key, void *param)
     return (0);
 }
 
+static int on_window_close(void *param)
+{
+    const t_app *app = (t_app *)param;
+    mlx_loop_end(app->mlx);
+    return (0);
+}
+
 int main(void)
 {
     t_app   app = {0};
@@ -189,6 +196,7 @@ int main(void)
     }
     init_system(&app);
     app.profiler.last_report = get_time_ns();
+    mlx_hook(app.window, 17, 0, on_window_close, &app);
     mlx_hook(app.window, 2, 1L<<0, on_keypress, &app);
     mlx_loop_hook(app.mlx, render_loop, &app);
     mlx_loop(app.mlx);

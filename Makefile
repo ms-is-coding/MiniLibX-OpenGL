@@ -6,7 +6,7 @@
 #    By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/10 00:34:01 by smamalig          #+#    #+#              #
-#    Updated: 2025/12/20 20:36:29 by rel-qoqu         ###   ########.fr        #
+#    Updated: 2025/12/21 12:40:57 by rel-qoqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ TEST_OBJS 	:= $(patsubst $(TEST_DIR)/%.c, $(TEST_B_DIR)/%.o, $(TESTS))
 TEST_DEPS 	:= $(TEST_OBJS:.o=.d)
 
 ifeq ($(DEBUG), 1)
-	CFLAGS += -Wpedantic -O0 -g3
+	CFLAGS += -Wpedantic -Og -g3 -fsanitize=address,undefined
 else
 	CFLAGS += -Werror -O3
 endif
