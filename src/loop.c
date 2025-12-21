@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 02:34:23 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/21 11:17:00 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:27:12 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	mlx_loop(t_mlx *mlx)
 	KeySym		keysym;
 	int			(*key_fn)(int, void *);
 	int			(*mouse_fn)(int, int, int, void *);
+	int			(*mouse_move_fn)(int, int, void *);
 
 	mlx_set_win_event_mask(mlx);
 	mlx->running = true;
@@ -110,13 +111,15 @@ int	mlx_loop(t_mlx *mlx)
 				&& (unsigned long)ev.xclient.data.l[0] == mlx->wm_delete
 				&& win->hooks[DestroyNotify].hook)
 				win->hooks[DestroyNotify].hook(win->hooks[DestroyNotify].param);
-			else if (ev.type == KeyPress && win->hooks[KeyPress].hook)
+			else if ((ev.type == KeyPress && win->hooks[KeyPress].hook)
+				|| (ev.type == KeyRelease && win->hooks[KeyRelease].hook))
 			{
 				keysym = XLookupKeysym(&ev.xkey, 0);
 				key_fn = (void *)win->hooks[KeyPress].hook;
 				key_fn((int)keysym, win->hooks[KeyPress].param);
 			}
-			else if (ev.type == ButtonPress && win->hooks[ButtonPress].hook)
+			else if ((ev.type == ButtonPress && win->hooks[ButtonPress].hook)
+				|| (ev.type == ButtonRelease && win->hooks[ButtonRelease].hook))
 			{
 				mouse_fn = (void *)win->hooks[ButtonPress].hook;
 				mouse_fn(ev.xbutton.button, ev.xbutton.x, ev.xbutton.y,
@@ -124,10 +127,10 @@ int	mlx_loop(t_mlx *mlx)
 			}
 			else if (ev.type == MotionNotify && win->hooks[MotionNotify].hook)
 			{
-				int (*mouse_move_fn)(int, int, void *) = (void *)win->hooks[MotionNotify].hook;
+				mouse_move_fn = (void *)win->hooks[MotionNotify].hook;
 				mouse_move_fn(ev.xmotion.x, ev.xmotion.y, win->hooks[MotionNotify].param);
 			}
-			else if (win->hooks[ev.type].hook)
+			else if (ev.type < MLX_MAX_EVENT && win->hooks[ev.type].hook)
 				win->hooks[ev.type].hook(win->hooks[ev.type].param);
 		}
 		if (mlx->loop_hook)
