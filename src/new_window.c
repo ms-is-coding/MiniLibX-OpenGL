@@ -6,7 +6,7 @@
 /*   By: smamalig <smamalig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 01:02:28 by smamalig          #+#    #+#             */
-/*   Updated: 2025/12/14 22:07:09 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:49:37 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,12 @@
 
 static void	*cleanup_window(t_mlx *mlx, t_window *window)
 {
-	if (mlx->gc)
-	{
-		XFreeGC(mlx->dpy, mlx->gc);
-		mlx->gc = NULL;
-	}
-	if (mlx->glc)
-	{
-		glXDestroyContext(mlx->dpy, mlx->glc);
-		mlx->glc = NULL;
-	}
+	if (window->gc)
+		XFreeGC(mlx->dpy, window->gc);
+	if (window->glc)
+		glXDestroyContext(mlx->dpy, window->glc);
+	if (window->cmap)
+		XFreeColormap(mlx->dpy, window->cmap);
 	if (window->xwin)
 		XDestroyWindow(mlx->dpy, window->xwin);
 	if (window->pbo_ids[0])
@@ -67,12 +63,12 @@ static bool	create_x11_window(t_mlx *mlx, t_window *window, const int w,
 {
 	XSetWindowAttributes	swa;
 
-	mlx->cmap = XCreateColormap(mlx->dpy, RootWindow(mlx->dpy, mlx->scr_id),
+	window->cmap = XCreateColormap(mlx->dpy, RootWindow(mlx->dpy, mlx->scr_id),
 			mlx->vi->visual, AllocNone);
 	swa.border_pixel = BlackPixel(mlx->dpy, mlx->scr_id);
 	swa.background_pixel = WhitePixel(mlx->dpy, mlx->scr_id);
 	swa.override_redirect = True;
-	swa.colormap = mlx->cmap;
+	swa.colormap = window->cmap;
 	swa.event_mask = 0xFFFFFF;
 	window->xwin = XCreateWindow(mlx->dpy, RootWindow(mlx->dpy, mlx->scr_id),
 			0, 0, w, h, 0,
@@ -80,7 +76,6 @@ static bool	create_x11_window(t_mlx *mlx, t_window *window, const int w,
 			mlx->vi->visual,
 			CWBackPixel | CWColormap | CWBorderPixel | CWEventMask,
 			&swa);
-	mlx->swa = swa;
 	if (!window->xwin)
 		return (false);
 	window->width = w;
@@ -93,17 +88,17 @@ static bool	setup_graphic_context(t_mlx *mlx, t_window *window)
 {
 	XGCValues	xgcv;
 
-	mlx->glc = glXCreateContext(mlx->dpy, mlx->vi, NULL, GL_TRUE);
-	if (!mlx->glc)
+	window->glc = glXCreateContext(mlx->dpy, mlx->vi, NULL, GL_TRUE);
+	if (!window->glc)
 		return (false);
 	xgcv.foreground = -1;
 	xgcv.function = GXcopy;
 	xgcv.plane_mask = AllPlanes;
-	mlx->gc = XCreateGC(mlx->dpy, window->xwin,
+	window->gc = XCreateGC(mlx->dpy, window->xwin,
 			GCFunction | GCPlaneMask | GCForeground, &xgcv);
-	if (!mlx->gc)
+	if (!window->gc)
 		return (false);
-	if (!glXMakeCurrent(mlx->dpy, window->xwin, mlx->glc))
+	if (!glXMakeCurrent(mlx->dpy, window->xwin, window->glc))
 		return (false);
 	glGenTextures(1, &window->texture_id);
 	glBindTexture(GL_TEXTURE_2D, window->texture_id);

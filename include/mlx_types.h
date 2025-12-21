@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 19:54:10 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/20 15:02:02 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:55:08 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ typedef struct s_hook
 typedef struct s_window
 {
 	struct s_window		*next;
+	Colormap			cmap;
+	GLXContext			glc;
+	GC					gc;
 	Window				xwin;
 	int					*pixel_buffer;
 	GLsync				fences[2];
@@ -64,12 +67,8 @@ typedef struct s_mlx
 	void					*loop_param;
 	XVisualInfo				*vi;
 	XFontStruct				*font;
-	Colormap				cmap;
-	GLXContext				glc;
-	GC						gc;
 	Atom					wm_delete;
 	Atom					wm_protocols;
-	XSetWindowAttributes	swa;
 	XWindowAttributes		gwa;
 	int						scr_id;
 	bool					running;

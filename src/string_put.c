@@ -6,7 +6,7 @@
 /*   By: rel-qoqu <rel-qoqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 14:07:30 by rel-qoqu          #+#    #+#             */
-/*   Updated: 2025/12/20 15:25:49 by rel-qoqu         ###   ########.fr       */
+/*   Updated: 2025/12/21 12:50:19 by rel-qoqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ static XImage	*rasterize_text(t_mlx *mlx, t_window *win, const char *str,
 	pmap = XCreatePixmap(mlx->dpy, win->xwin, t->w, t->h, mlx->vi->depth);
 	if (!pmap)
 		return (NULL);
-	XSetForeground(mlx->dpy, mlx->gc, 0xFFFFFFFF);
-	XSetBackground(mlx->dpy, mlx->gc, 0x00000000);
-	XFillRectangle(mlx->dpy, pmap, mlx->gc, 0, 0, t->w, t->h);
-	XDrawString(mlx->dpy, pmap, mlx->gc, 0, t->ascent, str, strlen(str));
+	XSetForeground(mlx->dpy, win->gc, 0xFFFFFFFF);
+	XSetBackground(mlx->dpy, win->gc, 0x00000000);
+	XFillRectangle(mlx->dpy, pmap, win->gc, 0, 0, t->w, t->h);
+	XDrawString(mlx->dpy, pmap, win->gc, 0, t->ascent, str, strlen(str));
 	img = XGetImage(mlx->dpy, pmap, 0, 0, t->w, t->h, AllPlanes, ZPixmap);
 	XFreePixmap(mlx->dpy, pmap);
 	return (img);

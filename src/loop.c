@@ -54,7 +54,7 @@ static void	render_frame(t_mlx *mlx, t_window *win)
 	const size_t	size = win->width * win->height * 4;
 
 	memcpy(win->pbo_ptrs[curr_id], win->pixel_buffer, size);
-	glXMakeCurrent(mlx->dpy, win->xwin, mlx->glc);
+	glXMakeCurrent(mlx->dpy, win->xwin, win->glc);
 	glBindBuffer(GL_PIXEL_UNPACK_BUFFER, win->pbo_ids[curr_id]);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, win->texture_id);
